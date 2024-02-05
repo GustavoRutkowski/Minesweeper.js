@@ -1,0 +1,170 @@
+main > #minesweeper {
+  width: 100%;
+  height: 682px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: start;
+  flex-wrap: wrap;
+}
+main > #minesweeper .row {
+  display: flex;
+  flex-direction: row;
+}
+main > #minesweeper .row .square {
+  width: 62px;
+  height: 62px;
+  font-weight: bold;
+  font-size: 20pt;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+main > #minesweeper .row .square:hover {
+  background-color: #bfe17d !important;
+}
+main > #minesweeper .row .square.marked:hover {
+  background-color: #e8d2bc !important;
+}
+main > #minesweeper .row .square.bomb-exploding {
+  animation: bomb-exploding 1s linear;
+}
+main > #minesweeper .row .square.explosion {
+  animation: explosion 0.2s ease-in-out;
+}
+main > #minesweeper .row .square.seed-growing {
+  animation: seed-growing 1s linear;
+}
+main > #minesweeper .row .square.flower-growing {
+  animation: flower-growing 0.6s ease;
+}
+main > #minesweeper .row:nth-child(odd) > .square:nth-child(odd), main > #minesweeper .row:nth-child(even) > .square:nth-child(even) {
+  background-color: #aad751;
+}
+main > #minesweeper .row:nth-child(odd) > .square:nth-child(odd).marked, main > #minesweeper .row:nth-child(even) > .square:nth-child(even).marked {
+  background-color: #e5c29f;
+}
+main > #minesweeper .row:nth-child(odd) > .square:nth-child(even), main > #minesweeper .row:nth-child(even) > .square:nth-child(odd) {
+  background-color: #a2d149;
+}
+main > #minesweeper .row:nth-child(odd) > .square:nth-child(even).marked, main > #minesweeper .row:nth-child(even) > .square:nth-child(odd).marked {
+  background-color: #d7b899;
+}
+
+main > #gameover-screen {
+  width: 340px;
+  margin: auto;
+  padding: 0;
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4ms;
+}
+main > #gameover-screen.hidden {
+  display: none;
+}
+main > #gameover-screen.fade-in {
+  animation: fade-in 0.5s ease-in-out;
+}
+main > #gameover-screen #screen, main > #gameover-screen button {
+  width: 100%;
+  border-radius: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  text-align: center;
+}
+main > #gameover-screen #screen {
+  background-color: #4ac0fd;
+  margin-bottom: 15px;
+  font-size: 20pt;
+}
+main > #gameover-screen button {
+  background-color: #4a752c;
+  padding: 10px;
+  border: none;
+  box-sizing: border-box;
+  font-size: 15pt;
+  cursor: pointer;
+}
+
+main {
+  width: 372px;
+  margin: auto;
+  padding: 0;
+}
+main header {
+  background-color: #4a752c;
+  width: 100%;
+  height: 75px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 10pt;
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+main header span > #flag-counter {
+  font-weight: bold;
+}
+
+@keyframes bomb-exploding {
+  from {
+    font-size: 20pt;
+  }
+  to {
+    font-size: 26pt;
+  }
+}
+@keyframes explosion {
+  0% {
+    font-size: 1pt;
+  }
+  95% {
+    font-size: 32pt;
+  }
+  100% {
+    font-size: 26pt;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes seed-growing {
+  from {
+    font-size: 1pt;
+  }
+  to {
+    font-size: 11pt;
+  }
+}
+@keyframes flower-growing {
+  from {
+    font-size: 12pt;
+  }
+  to {
+    font-size: 20pt;
+  }
+}
+
+/*# sourceMappingURL=styles.css.map */
