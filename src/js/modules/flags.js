@@ -7,13 +7,17 @@ const toggleFlag = (square) => {
             square.classList.remove('flag');
     
             gameInfos.flagCounter++;
-            gameInfos.flagCounterElement.innerHTML = gameInfos.flagCounter;
+
+            if (gameInfos.flagCounterElement)
+                gameInfos.flagCounterElement.innerHTML = gameInfos.flagCounter;
         } else if (square.innerText === '' && gameInfos.flagCounter > 0) {
-            square.innerText = '🚩';
+            square.innerHTML = '<span>🚩</span>';
             square.classList.add('flag');
     
             gameInfos.flagCounter--;
-            gameInfos.flagCounterElement.innerHTML = gameInfos.flagCounter;
+            
+            if (gameInfos.flagCounterElement)
+                gameInfos.flagCounterElement.innerHTML = gameInfos.flagCounter;
         };
     };
 };

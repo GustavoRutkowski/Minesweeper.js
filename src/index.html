@@ -8,124 +8,38 @@
 
     <link rel="stylesheet" href="./css/styles.css">
 
-    <script src="./js/main.js" type="module" defer></script>
+    <script src="./js/minesweeper-game.js" type="module" defer></script>
 </head>
 <body>
     <main>
         <header>
             <h1>Minesweeper.js</h1>
 
-            <span>Remaining Flags: <span id='flag-counter'>10</span></span>
+            <span>Remaining Flags: <span id='flag-counter'></span></span>
         </header>
 
-        <div id="minesweeper">
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-
-            <div class="row">
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-                <div class="square"></div>
-            </div>
-        </div>
-
-        <div id="gameover-screen" class="hidden">
-            <div id="screen">
-                <h2>Game Over!</h2>
-            </div>
-    
-            <button>↻ Try Again</button>
-        </div>
+        <minesweeper-game
+            width='6'
+            height='11'
+            bombs='10'
+        ></minesweeper-game>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const flagCounterElement = document.getElementById('flag-counter');
+
+            document.querySelectorAll('minesweeper-game')[0].setFlagCounter(flagCounterElement);
+        });
+    </script>
 </body>
 </html>
+
+<!--
+    Next Steps:
+
+    1. Measure the width of the game-over screen using relative units.
+    2. Leave the background dark when the game-over screen is displayed.
+    3. Delete the SCSS files related to component stuff, it will be used for header only.
+
+-->

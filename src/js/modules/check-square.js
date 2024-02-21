@@ -9,11 +9,11 @@ const getNeighboringSquaresIndexes = (index) => {
         offsets.forEach((offsetCol) => {
             if (offsetRow === 0 && offsetCol === 0) return;
 
-            const neighborRow = Math.floor(index / 6) + offsetRow;
-            const neighborCol = index % 6 + offsetCol;
+            const neighborRow = Math.floor(index / gameInfos.msWidth) + offsetRow;
+            const neighborCol = index % gameInfos.msWidth + offsetCol;
 
-            if (neighborRow >= 0 && neighborRow < 11 && neighborCol >= 0 && neighborCol < 6)
-                neighbors.push(neighborRow * 6 + neighborCol);
+            if (neighborRow >= 0 && neighborRow < gameInfos.msHeight && neighborCol >= 0 && neighborCol < gameInfos.msWidth)
+                neighbors.push(neighborRow * gameInfos.msWidth + neighborCol);
         });
     });
 
@@ -21,8 +21,8 @@ const getNeighboringSquaresIndexes = (index) => {
 };
 
 const checkSquareValue = (value, square, index) => {
-    if (square.innerText === '🚩') {
-        square.innerText = '';
+    if (square.innerHTML === '<span>🚩</span>') {
+        square.innerHTML = '';
         
         gameInfos.flagCounter++
         gameInfos.flagCounterElement.innerHTML = gameInfos.flagCounter;
@@ -46,7 +46,7 @@ const checkSquareValue = (value, square, index) => {
         square.classList.add('marked');
     
         if (valorSquare != '0') {
-            square.innerText = valorSquare;
+            square.innerHTML = `<span>${valorSquare}</span>`;
 
             square.style.color = valueColors[valorSquare];
         } else {

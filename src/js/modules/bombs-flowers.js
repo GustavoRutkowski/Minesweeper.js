@@ -37,11 +37,11 @@ const explodeInTimeInterval = (msInterval) => {
         else {
             if (gameInfos.minesweeperSquares[bombsIndexes[indexOfBomb]].innerHTML === '') {
                 const bombElement = gameInfos.minesweeperSquares[bombsIndexes[indexOfBomb]];
-                bombElement.innerHTML = '💣';
+                bombElement.innerHTML = '<span>💣</span>';
                 bombElement.classList.add('bomb-exploding');
 
                 bombElement.addEventListener('animationend', () => {
-                    bombElement.innerHTML = '💥';
+                    bombElement.innerHTML = '<span>💥</span>';
                     bombElement.classList.remove('bomb-exploding');
                     bombElement.classList.add('explosion');
                 });
@@ -67,14 +67,14 @@ const plantInTimeInterval = (msInterval) => {
     
         else {
             const bombElement = gameInfos.minesweeperSquares[bombsIndexes[indexOfFlower]];
-            bombElement.innerHTML = '🌱';
+            bombElement.innerHTML = '<span>🌱</span>';
             bombElement.classList.add('seed-growing');
     
             const flowersList = ['🌹', '🌻', '🌼', '🌷', '🥀', '🌾'];
             const flowerSelected = Math.floor(Math.random() * flowersList.length);
 
             bombElement.addEventListener('animationend', () => {
-                bombElement.innerHTML = flowersList[flowerSelected];
+                bombElement.innerHTML = `<span>${flowersList[flowerSelected]}</span>`;
                 bombElement.classList.remove('seed-growing');
                 bombElement.classList.add('flower-growing');
             });
