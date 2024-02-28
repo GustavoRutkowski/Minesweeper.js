@@ -17,11 +17,18 @@ const checkWin = () => {
     return !foundAnUnmarkedValue;
 };
 
+const removeMinesweeperFocus = () => {
+    gameInfos.minesweeperSquares.forEach(square => {
+        square.classList.add('dark');
+    });
+};
+
 const gameOver = (win=false) => {
     if (win) plantFlowers();
     else explodeBombs();
 
     restartGame();
+    removeMinesweeperFocus();
 };
 
 export { gameOver, checkWin };
