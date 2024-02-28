@@ -19,6 +19,8 @@ class Minesweeper extends HTMLElement {
         gameInfos.msHeight = this.height;
 
         this.bombs = parseInt(this.getAttribute('bombs'));
+        this.validateNumberOfBombs();
+        
         gameInfos.defaultFlags = this.bombs;
         gameInfos.flagCounter = gameInfos.defaultFlags;
 
@@ -26,6 +28,20 @@ class Minesweeper extends HTMLElement {
             gameInfos.flagCounterElement.innerHTML = gameInfos.flagCounter;
 
         this.build();
+    };
+
+    validateNumberOfBombs() {
+        const minimumFreeSquares = 2;
+    
+        const squaresQuantity = this.width * this.height;
+        const bombsQuantity = this.bombs;
+        const numberOfFreeSquares = squaresQuantity - bombsQuantity;
+    
+        if (numberOfFreeSquares < minimumFreeSquares) {
+            console.error("Insufficient free squares for the game to be valid.");
+
+            throw new Error("Game configuration is invalid.");
+        };
     };
 
     build() {
