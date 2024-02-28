@@ -84,11 +84,6 @@ class Minesweeper extends HTMLElement {
         return minesweeper;
     };
 
-    // Generate Unfocus Background
-
-    // Vai gerar uma div escura, que ocupa todo campo minado, sobrepondo o jogo, ela vai ter a função de deixar o fundo escuro quando o jogo acaba. Quando a gente encerra o jogo, ele insere esse elemento no HTML. Quando começamos um novo jogo ele remove o que havia antes.
-    
-
     // Generate Game-Over Screen HTML
 
     generateScreen() {
