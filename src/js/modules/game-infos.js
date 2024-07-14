@@ -8,6 +8,8 @@ const gameInfos = {
     minesweeperSquares: null,
     msWidth: null,
     msHeight: null,
+    msBombs: null,
+    msCheats: false,
     gameOverScreen: null,
 };
 

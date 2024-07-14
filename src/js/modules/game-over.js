@@ -23,7 +23,16 @@ const removeMinesweeperFocus = () => {
     });
 };
 
+// const removeEvents = () => {
+//     gameInfos.minesweeperSquares.forEach(square => {
+//         const squareClone = square.cloneNode(true);
+//         square.parentNode.replaceChild(squareClone, square);
+//     });
+// };
+
 const gameOver = (win=false) => {
+    // removeEvents();
+
     if (win) plantFlowers();
     else explodeBombs();
 

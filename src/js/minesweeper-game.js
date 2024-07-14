@@ -1,9 +1,6 @@
-import generateCSS from "./modules/generate-css.js";
-
-import { generateMatrix, addBombs, addSquares } from "./modules/generate-minesweeper.js";
+import generateCSS from "./modules/styles/gen-css.js";
+import addInputs from "./modules/inputs/add-inputs.js";
 import gameInfos from "./modules/game-infos.js";
-import toggleFlag from "./modules/flags.js";
-import checkSquareValue from "./modules/check-square.js";
 
 class Minesweeper extends HTMLElement {
     constructor() {
@@ -11,26 +8,15 @@ class Minesweeper extends HTMLElement {
         this.attachShadow({ mode: 'open' });
     };
 
-    connectedCallback() {
-        this.width = parseInt(this.getAttribute('width'));
-        gameInfos.msWidth = this.width;
-
-        this.height = parseInt(this.getAttribute('height'));
-        gameInfos.msHeight = this.height;
-
-        this.bombs = parseInt(this.getAttribute('bombs'));
-        this.validateNumberOfBombs();
-        
-        gameInfos.defaultFlags = this.bombs;
-        gameInfos.flagCounter = gameInfos.defaultFlags;
-
-        if (gameInfos.flagCounterElement)
-            gameInfos.flagCounterElement.innerHTML = gameInfos.flagCounter;
-
-        this.build();
+    #setGameInfo(key, value) {
+        gameInfos[key] = value;
     };
 
-    validateNumberOfBombs() {
+    #getGameInfo(key) {
+        return gameInfos[key];
+    };
+
+    #validateNumberOfBombs() {
         const minimumFreeSquares = 2;
     
         const squaresQuantity = this.width * this.height;
@@ -44,42 +30,21 @@ class Minesweeper extends HTMLElement {
         };
     };
 
-    build() {
-        const HTML = this.generateHTML();
-        this.shadowRoot.appendChild(HTML);
-
-        if (!gameInfos.gameOverScreen)
-            gameInfos.gameOverScreen = this.shadowRoot.querySelector('div #gameover-screen');
-
-        gameInfos.minesweeperSquares = this.shadowRoot.querySelectorAll('.square');
-
-        const square = gameInfos.minesweeperSquares[0];
-        const squareSizeInPixels = parseFloat(window.getComputedStyle(square).width) / this.width;
-
-        const fontSize = squareSizeInPixels * 0.43;
-
-        const CSS = generateCSS(this.width, this.height, fontSize);
-        this.shadowRoot.appendChild(CSS);
-    
-        this.executeMinesweeperAction();
-    };
-    
-
     // Generate Minesweeper HTML
 
-    generateSquare() {
+    #generateSquare() {
         const square = document.createElement('div');
         square.classList.add('square');
 
         return square;
     };
 
-    generateRow() {
+    #generateRow() {
         const row = document.createElement('div');
         row.classList.add('row');
 
         for (let i = 1; i <= this.width; i++) {
-            const square = this.generateSquare();
+            const square = this.#generateSquare();
 
             row.appendChild(square);
         };
@@ -87,12 +52,12 @@ class Minesweeper extends HTMLElement {
         return row;
     };
 
-    generateMinesweeper() {
+    #generateMinesweeper() {
         const minesweeper = document.createElement('div')
         minesweeper.id = 'minesweeper';
 
         for (let i = 1; i <= this.height; i++) {
-            const row = this.generateRow();
+            const row = this.#generateRow();
 
             minesweeper.appendChild(row);
         };
@@ -102,7 +67,7 @@ class Minesweeper extends HTMLElement {
 
     // Generate Game-Over Screen HTML
 
-    generateScreen() {
+    #generateScreen() {
         const screen = document.createElement('div');
         screen.id = 'screen';
         screen.innerHTML = '<h2>Game Over!</h2>';
@@ -110,20 +75,20 @@ class Minesweeper extends HTMLElement {
         return screen;
     };
 
-    generateButton() {
+    #generateButton() {
         const button = document.createElement('button');
         button.innerText = '↻ Try Again';
 
         return button;
     };
 
-    generateGameOverScreen() {
+    #generateGameOverScreen() {
         const gameOverScreen = document.createElement('div');
         gameOverScreen.id = 'gameover-screen';
         gameOverScreen.classList.add('hidden');
 
-        const screen = this.generateScreen();
-        const button = this.generateButton();
+        const screen = this.#generateScreen();
+        const button = this.#generateButton();
 
         gameOverScreen.appendChild(screen);
         gameOverScreen.appendChild(button);
@@ -133,11 +98,11 @@ class Minesweeper extends HTMLElement {
 
     // Generate HTML
 
-    generateHTML() {
+    #generateHTML() {
         const HTML = document.createElement('div');
 
-        const minesweeper = this.generateMinesweeper();
-        const gameOverScreen = this.generateGameOverScreen();
+        const minesweeper = this.#generateMinesweeper();
+        const gameOverScreen = this.#generateGameOverScreen();
 
         HTML.appendChild(minesweeper);
         HTML.appendChild(gameOverScreen);
@@ -145,61 +110,66 @@ class Minesweeper extends HTMLElement {
         return HTML;
     };
 
-    // Flags Counter
+    // Component Part
+
+    connectedCallback() {
+        this.width = parseInt(this.getAttribute('width')) || 6;
+        this.height = parseInt(this.getAttribute('height')) || 11;
+        this.bombs = parseInt(this.getAttribute('bombs')) || 10;
+        this.cheats = Boolean(this.getAttribute('cheats')) || false;
+
+        this.#validateNumberOfBombs();
+        this.#setGameInfo('msWidth', this.width);
+        this.#setGameInfo('msHeight', this.height);
+        this.#setGameInfo('msBombs', this.bombs);
+        this.#setGameInfo('msCheats', this.cheats);
+        this.#setGameInfo('defaultFlags', this.bombs);
+        this.#setGameInfo('flagCounter', this.#getGameInfo('defaultFlags'));
+
+        if (this.#getGameInfo('flagCounterElement'))
+            this.#getGameInfo('flagCounterElement').innerHTML = this.#getGameInfo('flagCounter');
+
+        this.#build();
+    };
+
+    #build() {
+        const HTML = this.#generateHTML();
+        this.shadowRoot.appendChild(HTML);
+
+        if (!this.#getGameInfo('gameOverScreen'))
+            this.#setGameInfo('gameOverScreen', this.shadowRoot.querySelector('div #gameover-screen'));
+
+        this.#setGameInfo('minesweeperSquares', this.shadowRoot.querySelectorAll('.square'));
+
+        const square = this.#getGameInfo('minesweeperSquares')[0];
+        const squareSizeInPixels = parseFloat(window.getComputedStyle(square).width) / this.width;
+
+        const fontSize = squareSizeInPixels * 0.43;
+
+        const CSS = generateCSS(this.width, this.height, fontSize);
+        this.shadowRoot.appendChild(CSS);
+    
+        addInputs();
+    };
 
     setFlagCounter(element) {
         if (!element instanceof HTMLElement) {
             console.error('element is not a HTMLElement');
 
             throw new TypeError('element is not a HTMLElement');
-        } else {
-            if (!document.body.contains(element)) {
-                console.error('element does not exist in HTML');
-
-                throw new Error('element does not exist in HTML');
-            };
         };
 
-        gameInfos.flagCounterElement = element;
+        if (!document.body.contains(element)) {
+            console.error('element does not exist in HTML');
 
-        gameInfos.flagCounterElement.textContent = gameInfos.flagCounter;
-    };
+            throw new Error('element does not exist in HTML');
+        };
 
-    // Set Minesweeper Actions
-
-    protectInitialPosition(position) {
-        do {
-            gameInfos.minesweeperMatrix = generateMatrix(this.height, this.width);
-    
-            addBombs(gameInfos.minesweeperMatrix, this.height, this.width, this.bombs);
-            addSquares(gameInfos.minesweeperMatrix);
-    
-            gameInfos.minesweeperArray = gameInfos.minesweeperMatrix.flat();
-    
-            console.clear();
-            console.table(gameInfos.minesweeperMatrix);
-        } while (gameInfos.minesweeperArray[position] === '💣');
-    };
-
-    executeMinesweeperAction() {
-        gameInfos.minesweeperSquares.forEach((square, index) => {
-            square.addEventListener('contextmenu', (event) => {
-                event.preventDefault();
-        
-                toggleFlag(square);
-            });
-        
-            square.addEventListener('click', (event) => {
-                event.preventDefault();
-        
-                if (gameInfos.minesweeperArray === null)
-                    this.protectInitialPosition(index);
-        
-                if (event.button === 0)
-                    checkSquareValue(gameInfos.minesweeperArray[index], square, index);
-            });
-        });
+        this.#setGameInfo('flagCounterElement', element);
+        this.#getGameInfo('flagCounterElement').textContent = this.#getGameInfo('flagCounter');
     };
 };
 
 customElements.define('minesweeper-game', Minesweeper);
+
+export default Minesweeper;

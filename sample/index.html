@@ -21,11 +21,20 @@
             <span>🚩: <span id='flag-counter'></span></span>
         </header>
 
+        <!--
+            Use Minesweeper Component
+
+            @attribute {number} width - Squares on the X-Axis
+            @attribute {number} height - Squares on the Y-Axis
+            @attribute {number} bombs - Number of bombs in game
+            @attribute {number} cheats - Display bombs on the console
+        -->
         <minesweeper-game
             id='ms-game'
             width='6'
             height='11'
             bombs='10'
+            cheats='true'
         ></minesweeper-game>
     </main>
 </body>

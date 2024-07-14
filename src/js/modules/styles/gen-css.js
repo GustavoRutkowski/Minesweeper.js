@@ -1,5 +1,13 @@
 const calcPercent = (percent, value) => (percent / 100) * value;
 
+/*
+    generateCSS(width, height, fontSize))
+
+    @param {number} width - Squares on the X-Axis
+    @param {number} height - Squares on the Y-Axis
+    @param (number) fontSize - Default fontSize to Scale-Resizing
+    @returns {HTMLStyleElement} - Style-Tag with custom CSS to component
+*/
 const generateCSS = (width, height, fontSize) => {
     const styles = document.createElement('style');
 
@@ -129,7 +137,7 @@ const generateCSS = (width, height, fontSize) => {
         #gameover-screen #screen,
         #gameover-screen button {
             width: 100%;
-            border-radius: 15px;
+            border-radius: 5px;
             font-family: Arial, Helvetica, sans-serif;
             color: white;
             text-align: center;

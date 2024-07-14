@@ -1,89 +1,95 @@
 import gameInfos from "./game-infos.js";
 
+/*
+    getRandomOrderOfBombs() - Returns an Array with the Indexes of each Bomb in random order
+    @returns {[]} bombsIndexes - Indexes of Bombs in random order
+*/
 const getRandomOrderOfBombs = () => {
-    let indicesBombas = [];
+    const bombsIndexes = [];
     
-    gameInfos.minesweeperArray.forEach((e, i) => {
-        if (e === '💣')
-            indicesBombas.push(i);
+    gameInfos.minesweeperArray.forEach((square, index) => {
+        if (square === '💣') bombsIndexes.push(index);
     });
     
-    for (let indiceAtual = indicesBombas.length - 1; indiceAtual > 0; indiceAtual--) {
-        const indiceAleatorio = Math.floor(Math.random() * (indiceAtual + 1));
-    
+    for (let i = bombsIndexes.length-1; i > 0; i--) {
+        const randomIndex = Math.floor(Math.random() * (i + 1));
+
+        // Shuffles the bombsIndexes vector
         [
-            indicesBombas[indiceAtual],
-            indicesBombas[indiceAleatorio],
+            bombsIndexes[i],
+            bombsIndexes[randomIndex]
         ] = [
-            indicesBombas[indiceAleatorio],
-            indicesBombas[indiceAtual],
+            bombsIndexes[randomIndex],
+            bombsIndexes[i]
         ];
     };
 
-    return indicesBombas;
+    return bombsIndexes;
 };
+
+let bombsIndexes;
 
 let explosionIntervalID;
 
-const explodeInTimeInterval = (msInterval) => {
-    let bombsIndexes = getRandomOrderOfBombs();
+/*
+    renderResult(index, win=true) - Renders Bombs or Flowers Depending on the "win" Value
 
+    @param {number} index - Index of Bomb in Matrix
+    @param {boolean} win - Used to Know if we Need to Display Flowers or Bombs
+*/
+const renderResult = (index, win=true) => {
+    const flowersList = ['🌹', '🌻', '🌼', '🌷', '🥀', '🌾'];
+    const randomFlowerIndex = Math.floor(Math.random() * flowersList.length);
+    const flowerSelected = flowersList[randomFlowerIndex]
+
+    const resultEmojisStates = win ? ['🌱', flowerSelected] : ['💣', '💥'];
+
+    const squareIndex = bombsIndexes[index];
+    const squareIsEmpty = gameInfos.minesweeperSquares[squareIndex].innerHTML === '';
+
+    if (!win && !squareIsEmpty) return;
+
+    const bombElement = gameInfos.minesweeperSquares[squareIndex];
+    bombElement.innerHTML = `<span>${resultEmojisStates[0]}</span>`;
+    bombElement.classList.add('bomb-exploding');
+
+    bombElement.addEventListener('animationend', () => {
+        bombElement.innerHTML = `<span>${resultEmojisStates[1]}</span>`;
+        bombElement.classList.remove('bomb-exploding');
+        bombElement.classList.add('explosion');
+    });
+};
+
+function explodeBombs(msInterval=1500) {
+    bombsIndexes = getRandomOrderOfBombs();
     let indexOfBomb = 0;
     
     explosionIntervalID = setInterval(() => {
-        if (indexOfBomb >= bombsIndexes.length)
+        if (indexOfBomb >= bombsIndexes.length) {
             clearInterval(explosionIntervalID);
-
-        else {
-            if (gameInfos.minesweeperSquares[bombsIndexes[indexOfBomb]].innerHTML === '') {
-                const bombElement = gameInfos.minesweeperSquares[bombsIndexes[indexOfBomb]];
-                bombElement.innerHTML = '<span>💣</span>';
-                bombElement.classList.add('bomb-exploding');
-
-                bombElement.addEventListener('animationend', () => {
-                    bombElement.innerHTML = '<span>💥</span>';
-                    bombElement.classList.remove('bomb-exploding');
-                    bombElement.classList.add('explosion');
-                });
-            };
+        } else {
+            renderResult(indexOfBomb, false);
 
             indexOfBomb++;
         }
-    }, msInterval);
+    }, msInterval / bombsIndexes.length);
 };
-
-const explodeBombs = () => explodeInTimeInterval(300);
 
 let plantationsIntervalID;
 
-const plantInTimeInterval = (msInterval) => {
-    let bombsIndexes = getRandomOrderOfBombs();
-    
+function plantFlowers(msInterval=2500) {
+    bombsIndexes = getRandomOrderOfBombs();
     let indexOfFlower = 0;
         
     plantationsIntervalID = setInterval(() => {
-        if (indexOfFlower >= bombsIndexes.length)
+        if (indexOfFlower >= bombsIndexes.length) {
             clearInterval(plantationsIntervalID);
-    
-        else {
-            const bombElement = gameInfos.minesweeperSquares[bombsIndexes[indexOfFlower]];
-            bombElement.innerHTML = '<span>🌱</span>';
-            bombElement.classList.add('seed-growing');
-    
-            const flowersList = ['🌹', '🌻', '🌼', '🌷', '🥀', '🌾'];
-            const flowerSelected = Math.floor(Math.random() * flowersList.length);
-
-            bombElement.addEventListener('animationend', () => {
-                bombElement.innerHTML = `<span>${flowersList[flowerSelected]}</span>`;
-                bombElement.classList.remove('seed-growing');
-                bombElement.classList.add('flower-growing');
-            });
+        } else {
+            renderResult(indexOfFlower);
     
             indexOfFlower++;
         }
-    }, msInterval);
+    }, msInterval / bombsIndexes.length);
 };
-    
-const plantFlowers = () => plantInTimeInterval(300);
 
 export { explosionIntervalID, plantationsIntervalID, explodeBombs, plantFlowers };
