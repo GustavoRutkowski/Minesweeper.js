@@ -1,0 +1,195 @@
+/* Variables */
+:host {
+    /* Dynamic */
+    --board-width: 11;
+    --board-height: 8;
+    --cell-font-size: 16px;
+
+    /* Colors */
+    --square: #aad751;
+    --square-dark: #a2d149;
+    --square-hover: #bfe17d;
+    --square-revealed: #e5c29f;
+    --square-revealed-dark: #d7b899;
+    --square-revealed-hover: #e8d2bc;
+    --gameover-screen: #4ac0fd;
+    --gameover-screen-button: #4a752c;
+    
+    --a1: #1976d2;
+    --a2: #3c8f3f;
+    --a3: #d32f2f;
+    --a4: #7b1fa2;
+    --a5: #ff8f00;
+    --a6: #0097a7;
+    --a7: #424242;
+    --a8: #a39c92;
+
+    /* Fonts */
+    --font-grow-small: 0.55;
+    --font-grow-medium: 1.3;
+    --font-grow-large: 1.6;
+}
+
+/* Animations */
+
+@keyframes bomb-exploding {
+    from { font-size: var(--cell-font-size); }
+    to { font-size: calc(var(--cell-font-size) * var(--font-grow-medium)); }
+}
+
+@keyframes explosion {
+    0% { font-size: calc(var(--cell-font-size) * 0.05); }
+    95% { font-size: calc(var(--cell-font-size) * var(--font-grow-large)); }
+    100% { font-size: calc(var(--cell-font-size) * var(--font-grow-medium)); }
+}
+
+@keyframes seed-growing {
+    from { font-size: calc(var(--cell-font-size) * 0.05); }
+    to { font-size: calc(var(--cell-font-size) * var(--font-grow-small)); }
+}
+
+@keyframes flower-growing {
+    from { font-size: calc(var(--cell-font-size) * 0.6); }
+    to { font-size: var(--cell-font-size); }
+}
+
+/* Styles: */
+
+#minesweeper {
+    width: 100%;
+    height: 0;
+    padding-bottom: 20%;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(var(--board-width), 1fr);
+    grid-template-rows: repeat(var(--board-height), 1fr);
+}
+
+#minesweeper .row { display: contents; }
+
+#minesweeper .row .square {
+    width: 100%;
+    aspect-ratio: 1;
+    /* height: 0; */
+    /* padding-bottom: 100%; */
+    position: relative;
+    font-weight: bold;
+    font-size: var(--cell-font-size);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#minesweeper.dark .row .square { filter: brightness(0.75); }
+
+#minesweeper .row .square:hover { background-color: var(--square-hover) !important; }
+#minesweeper .row .square.marked:hover { background-color: var(--square-revealed-hover) !important; }
+
+#minesweeper .row .square.bomb-exploding { animation: bomb-exploding 1s linear; }
+#minesweeper .row .square.explosion { animation: explosion 0.2s ease-in-out; }
+
+#minesweeper .row .square.seed-growing { animation: seed-growing 1s linear; }
+#minesweeper .row .square.flower-growing { animation: flower-growing 0.6s ease; }
+
+#minesweeper .row .square span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#minesweeper .row:nth-child(odd) > .square:nth-child(odd),
+#minesweeper .row:nth-child(even) > .square:nth-child(even) {
+    background-color: var(--square);
+}
+
+#minesweeper .row:nth-child(odd) > .square:nth-child(odd).marked,
+#minesweeper .row:nth-child(even) > .square:nth-child(even).marked {
+    background-color: var(--square-revealed);
+}
+
+#minesweeper .row:nth-child(odd) > .square:nth-child(even),
+#minesweeper .row:nth-child(even) > .square:nth-child(odd) {
+    background-color: var(--square-dark);
+}
+
+#minesweeper .row:nth-child(odd) > .square:nth-child(even).marked,
+#minesweeper .row:nth-child(even) > .square:nth-child(odd).marked {
+    background-color: var(--square-revealed-dark);
+}
+
+/* Game-Over Screen */
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+div:has(#gameover-screen) {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameover-screen {
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4ms;
+}
+
+#gameover-screen.hidden { display: none; }
+#gameover-screen.fade-in { animation: fade-in 0.5s ease-in-out; }
+
+#gameover-screen #screen,
+#gameover-screen button {
+    width: 100%;
+    border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-align: center;
+}
+
+#gameover-screen #screen {
+    background-color: var(--gameover-screen);
+    margin-bottom: 15px;
+    font-size: 20pt;
+}
+
+#gameover-screen button {
+    background-color: var(--gameover-screen-button);
+    padding: 10px;
+    border: none;
+    box-sizing: border-box;
+    font-size: 15pt;
+    cursor: pointer;
+}
+
+/* Square Colors: */
+
+.square.marked.a1 { color: var(--a1); }
+.square.marked.a2 { color: var(--a2); }
+.square.marked.a3 { color: var(--a3); }
+.square.marked.a4 { color: var(--a4); }
+.square.marked.a5 { color: var(--a5); }
+.square.marked.a6 { color: var(--a6); }
+.square.marked.a7 { color: var(--a7); }
+.square.marked.a8 { color: var(--a8); }

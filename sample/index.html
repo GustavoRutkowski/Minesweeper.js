@@ -7,7 +7,8 @@
     <title>Minesweeper.js</title>
 
     <!-- Import Minesweeper Component -->
-    <script src="../src/js/minesweeper-game.js" type="module" defer></script>
+    <!-- <script src="../src/js/minesweeper-game.js" type="module" defer></script> -->
+    <script type="module" src="../source/MinesweeperGame.js" defer></script>
 
     <!-- Import Sample Styles and Script -->
     <link rel="stylesheet" href="./styles.css">
@@ -27,14 +28,12 @@
             @attribute {number} width - Squares on the X-Axis
             @attribute {number} height - Squares on the Y-Axis
             @attribute {number} bombs - Number of bombs in game
-            @attribute {number} cheats - Display bombs on the console
         -->
         <minesweeper-game
             id='ms-game'
             width='6'
             height='11'
             bombs='10'
-            cheats='true'
         ></minesweeper-game>
     </main>
 </body>
