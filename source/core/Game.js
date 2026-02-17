@@ -40,11 +40,15 @@ class Game {
 
     // Retorna o jogo no formato renderizável pelo State
     serialize() {
+        const flagsPlaced = this.board.get().flat()
+            .reduce((acc, cell) => acc + cell.flagged, 0)
+
         return {
             status: this.status, // playing | won | lost
             width: this.#width,
             height: this.#height,
             bombs: this.#bombs,
+            flags: flagsPlaced,
             board: this.board.get(), // Cell[][]
         };
     }
